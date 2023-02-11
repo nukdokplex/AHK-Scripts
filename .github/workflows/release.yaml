@@ -18,7 +18,7 @@ jobs:
           Expand-Archive -Path "$cwd\ahk2exe.zip" -DestinationPath "$cwd\" -Force;
           Remove-Item -Path "$cwd\ahk2exe.zip" -Force
           Write-Output "Installation completed!"
-      - name: Compile x86 binaries
+      - name: Compile binaries...
         shell: pwsh
         run: |
           $cwd = (Get-Item .).FullName
@@ -53,7 +53,9 @@ jobs:
           files: "out/*"
           draft: false
           prerelease: false
-          
+          tag: ${{ github.sha }}
+
+
 
 
 
