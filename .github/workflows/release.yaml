@@ -54,7 +54,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
-          files: "out"
+          files: "out/*"
           draft: false
           prerelease: false
           tag_name: ${{ github.run_id }}
