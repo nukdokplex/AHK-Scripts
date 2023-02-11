@@ -1,0 +1,62 @@
+name: Build all AHK scripts and make release
+
+on: push 
+
+jobs:
+  build-and-release:
+    name: Build and Release
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install AHK2EXE
+        shell: pwsh
+        run: |
+          Write-Output "Installing ahk2exe-portable..."
+          $cwd = (Get-Item .).FullName
+          Invoke-WebRequest "https://github.com/nukdokplex/ahk2exe-portable/releases/download/2.0.2/ahk2exe-portable.zip" -OutFile "$cwd\ahk2exe.zip";
+          Expand-Archive -Path "$cwd\ahk2exe.zip" -DestinationPath "$cwd\" -Force;
+          Remove-Item -Path "$cwd\ahk2exe.zip" -Force
+          Write-Output "Installation completed!"
+      - name: Compile x86 binaries
+        shell: pwsh
+        run: |
+          $cwd = (Get-Item .).FullName
+          $ahk2exe = "$cwd\ahk2exe-portable\Compiler\Ahk2Exe.exe"
+          $ahk32 = "$cwd\ahk2exe-portable\AutoHotkey32.exe"
+          $ahk64 = "$cwd\ahk2exe-portable\AutoHotkey64.exe"
+          mkdir -p "$cwd\out"
+          $out = "$cwd\out"
+          Write-Output "Compiling x86 binaries..."
+          dir $cwd -include ('*.ahk', '*.ahk2') | Foreach-Object {
+            $command = $ahk2exe
+            $command += " /compress 2"
+            $command += " /ahk $ahk32"
+            $command += " /in "+$_.FullName
+            $command += " /out $out\" + [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) + "32.exe"
+            $command += " | Write-Output"
+            Invoke-Expression $command
+          }
+          Write-Output "Compiling x64 binaries..."
+          dir $cwd -include ('*.ahk', '*.ahk2') | Foreach-Object {
+            $command = $ahk2exe
+            $command += " /compress 2"
+            $command += " /ahk $ahk64"
+            $command += " /in "+$_.FullName
+            $command += " /out $out\" + [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) + "64.exe"
+            $command += " | Write-Output"
+            Invoke-Expression $command
+          }
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "out/*"
+          draft: false
+          prerelease: false
+          
+
+
+
+
+
+          

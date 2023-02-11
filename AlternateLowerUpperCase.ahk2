@@ -1,0 +1,31 @@
+/*
+    This script alternates between uppercase and lowerhotkeycase letters by Ctrl + Win + A 
+    ThIs mAkE TeXt lOoK LiKe tHiS!
+*/
+
+#SingleInstance Prompt
+
+global Toggle := False
+global CapsState := False
+
+^#A:: {
+    global Toggle := !Toggle
+}
+
+#HotIf Toggle
+loop 26 {
+    global Toggle
+    HotIf "Toggle"
+    Hotkey '~' . (GetKeyName(Chr(96+A_Index))), Alternate
+}
+HotIf "Toggle"
+Hotkey "~Space", Alternate
+HotIf
+#HotIf
+
+Alternate(ThisHotkey) {
+    global CapsState
+    SetCapsLockState(CapsState)
+    CapsState := !CapsState
+}
+
