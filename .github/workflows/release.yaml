@@ -25,25 +25,28 @@ jobs:
           $ahk2exe = "$cwd\ahk2exe-portable\Compiler\Ahk2Exe.exe"
           $ahk32 = "$cwd\ahk2exe-portable\AutoHotkey32.exe"
           $ahk64 = "$cwd\ahk2exe-portable\AutoHotkey64.exe"
-          mkdir -p "$cwd\out"
+          #mkdir -p "$cwd\out"
           $out = "$cwd\out"
+          $FileSpecs = ForEach-Object{$($cwd + "\*.ahk"), $($cwd + "\*.ahk2")}
           Write-Output "Compiling x86 binaries..."
-          dir $cwd -include ('*.ahk', '*.ahk2') | Foreach-Object {
+          Get-ChildItem -Path $FileSpecs | Foreach-Object {
             $command = $ahk2exe
-            $command += " /compress 2"
-            $command += " /ahk $ahk32"
+            $command += " /silent verbose"
+            $command += " /compress 0"
+            $command += " /base $ahk32"
             $command += " /in "+$_.FullName
-            $command += " /out $out\" + [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) + "32.exe"
+            $command += " /out $out\" + [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) + "_x86.exe"
             $command += " | Write-Output"
             Invoke-Expression $command
           }
           Write-Output "Compiling x64 binaries..."
-          dir $cwd -include ('*.ahk', '*.ahk2') | Foreach-Object {
+          Get-ChildItem -Path $FileSpecs | Foreach-Object {
             $command = $ahk2exe
-            $command += " /compress 2"
-            $command += " /ahk $ahk64"
+            $command += " /silent verbose"
+            $command += " /compress 0"
+            $command += " /base $ahk64"
             $command += " /in "+$_.FullName
-            $command += " /out $out\" + [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) + "64.exe"
+            $command += " /out $out\" + [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) + "_x64.exe"
             $command += " | Write-Output"
             Invoke-Expression $command
           }
