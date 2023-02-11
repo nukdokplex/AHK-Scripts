@@ -47,6 +47,7 @@ jobs:
             $command += " | Write-Output"
             Invoke-Expression $command
           }
+          ls $out
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
