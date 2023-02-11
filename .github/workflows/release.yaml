@@ -53,7 +53,7 @@ jobs:
           files: "out/*"
           draft: false
           prerelease: false
-          tag_name: ${{ github.sha }}
+          tag_name: ${{ github.run_id }}
 
 
 
