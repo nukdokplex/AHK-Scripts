@@ -25,7 +25,7 @@ jobs:
           $ahk2exe = "$cwd\ahk2exe-portable\Compiler\Ahk2Exe.exe"
           $ahk32 = "$cwd\ahk2exe-portable\AutoHotkey32.exe"
           $ahk64 = "$cwd\ahk2exe-portable\AutoHotkey64.exe"
-          #mkdir -p "$cwd\out"
+          mkdir -p "$cwd\out"
           $out = "$cwd\out"
           $FileSpecs = ForEach-Object{$($cwd + "\*.ahk"), $($cwd + "\*.ahk2")}
           Write-Output "Compiling x86 binaries..."
