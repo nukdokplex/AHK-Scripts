@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
-        uses: nukdokplex/autohotkey-build@0.1
+        uses: nukdokplex/autohotkey-build@v0.1
         with:
           version: v2.0.2
           x64: true
