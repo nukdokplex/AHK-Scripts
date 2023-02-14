@@ -1,6 +1,9 @@
 name: Build all AHK scripts and make release
 
-on: push 
+on:
+  push:
+    tags:
+      - '*'
 
 jobs:
   build-and-release:
