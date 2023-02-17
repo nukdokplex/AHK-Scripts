@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
-        uses: nukdokplex/autohotkey-build@v0.1
+        uses: nukdokplex/autohotkey-build@v1
         with:
           version: v2.0.2
           x64: true
@@ -23,7 +23,7 @@ jobs:
           compression: upx
           in: ""
           out: out
-          icon: ""
+          icon: icons
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
